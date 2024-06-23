@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from random import choice, shuffle
 
-words = ["penny", "gained", "saved", "earned", "given", "real", "pennied", "say", "said", "walked", "eaten", "pretty", "penniless"]
+words = ["apple", "penny", "gained", "saved", "earned", "given", "real", "pennied", "say", "said", "walked", "eaten", "pretty", "penniless", "day"]
 phrases = [
     [3, "you know what they {0}, {1}, {2}"],
     [4, "you know what they say, a {0} {1} is a {2} {3}"],
