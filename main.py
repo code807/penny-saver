@@ -1,30 +1,49 @@
 from fastapi import FastAPI
+from random import choice
+import string
 
-from random import choice, shuffle
-
-words = ["penny", "gained", "saved", "earned", "given", "real", "pennied", "say", "said", "walked", "eaten", "pretty", "penniless"]
-phrases = [
-    [3, "you know what they {0}, {1}, {2}"],
-    [4, "you know what they say, a {0} {1} is a {2} {3}"],
-    [4, "a {0} {1} is a {2} {3}"],
-    [4, "a {0} penny is {1} and {2} {3}"]
+FIXED_FIRST_WORD: bool = True
+PHRASES: list[str] = [
+    "You know what they {}, {}, {}.",
+    "You know what they say, a {} {} is a {} {}.",
+    "A {} {} is a {} {}.",
+    "A {} penny is {} and {} {}."
+]
+WORDS: list[str] = [
+    "penny",
+    "gained",
+    "saved",
+    "earned",
+    "given",
+    "real",
+    "pennied",
+    "say",
+    "said",
+    "walked",
+    "eaten",
+    "pretty",
+    "penniless"
 ]
 
-app = FastAPI()
+app: FastAPI = FastAPI()
 
 @app.get("/penny-saver")
 @app.get("/penny-saver/")
 async def translate():
-    randomphrase = choice(phrases)
-    count = randomphrase[0]
-    phrasewords = []
-    pennycount = 1
-    for penny in range(pennycount):
-        phrasewords.append("penny")
-    for word in range(count-pennycount):
-        phrasewords.append(choice(words))
-    shuffle(phrasewords)
-    final = randomphrase[1]
-    for n in range(count):
-        final = final.replace("{"+str(n)+"}", phrasewords[n])
-    return final
+    phrase: str = choice(PHRASES)
+    return phrase.format(*random_substitution_words(phrase))
+
+
+def random_substitution_words(text: str) -> list[str]:
+    random_words: list[str] = []
+    fixed_word = FIXED_FIRST_WORD
+
+    for placeholder_component in string.Formatter().parse(text):
+        field_name: str | None = placeholder_component[1]
+        if field_name is None:
+            continue
+
+        random_words.append(WORDS[0] if fixed_word else choice(WORDS))
+        fixed_word = False
+
+    return random_words
