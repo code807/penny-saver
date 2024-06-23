@@ -6,4 +6,3 @@ A {} {} is a {} towards a {}.
 A {} {} is a {} you can {} again.
 A wise {} {} is a wise {} {}.
 Better a small {} than an empty {}.
-{}
