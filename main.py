@@ -6,8 +6,12 @@ FIXED_FIRST_WORD: bool = True
 PHRASES: list[str] = [
     "You know what they {}, {}, {}.",
     "You know what they say, a {} {} is a {} {}.",
+    "A {} penny is {} and {} {}.",
     "A {} {} is a {} {}.",
-    "A {} penny is {} and {} {}."
+    "A {} {} is a {} towards a {}.",
+    "A {} {} is a {} you can {} again.",
+    "A wise {} {} is a wise {} {}.",
+    "Better a small {} than an empty {}."
 ]
 WORDS: list[str] = [
     "penny",
@@ -22,7 +26,9 @@ WORDS: list[str] = [
     "walked",
     "eaten",
     "pretty",
-    "penniless"
+    "penniless",
+    "dream",
+    "lose"
 ]
 
 app: FastAPI = FastAPI()
