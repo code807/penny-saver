@@ -47,3 +47,13 @@ def random_substitution_words(text: str) -> list[str]:
         fixed_word = False
 
     return random_words
+
+
+def test_translate():
+    async def _test_translate():
+        print()
+        for _ in range(10):
+            print(await translate())
+
+    import asyncio
+    asyncio.run(_test_translate())
