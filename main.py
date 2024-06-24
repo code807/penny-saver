@@ -31,25 +31,15 @@ async def translate():
 
 def random_substitution_words(text: str) -> list[str]:
     random_words: list[str] = []
-    fixed_words_left = FIXED_FIRST_WORD_COUNT
+    fixed_words_remaining = FIXED_FIRST_WORD_COUNT
 
     for placeholder_component in string.Formatter().parse(text):
         field_name: str | None = placeholder_component[1]
         if field_name is None:
             continue
 
-        random_words.append(words[0] if fixed_words_left > 0 else choice(words))
-        fixed_words_left -= 1
+        random_words.append(words[0] if fixed_words_remaining > 0 else choice(words))
+        fixed_words_remaining -= 1
 
     shuffle(random_words)
     return random_words
-
-
-def test_translate():
-    async def _test_translate():
-        print()
-        for _ in range(10):
-            print(await translate())
-
-    import asyncio
-    asyncio.run(_test_translate())
