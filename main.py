@@ -1,11 +1,11 @@
 from fastapi import FastAPI
-from random import choice
+from random import choice, shuffle
 import string
 
-FIXED_FIRST_WORD: bool = True
+FIXED_FIRST_WORD_COUNT: int = 1
 PHRASES_FILE_PATH: str = "data/phrases.txt"
 WORDS_FILE_PATH: str = "data/words.txt"
-DATA_ERROR_FALLBACK: str = "pennyless"
+FILE_LOAD_ERROR_FALLBACK: str = "pennyless"
 
 
 def load_data(filename) -> list[str]:
@@ -14,7 +14,7 @@ def load_data(filename) -> list[str]:
             return [line.strip() for line in file.readlines()]
     except FileNotFoundError as e:
         print(f"Error: {e}")
-        return [DATA_ERROR_FALLBACK]
+        return [FILE_LOAD_ERROR_FALLBACK]
 
 
 app: FastAPI = FastAPI()
@@ -31,16 +31,17 @@ async def translate():
 
 def random_substitution_words(text: str) -> list[str]:
     random_words: list[str] = []
-    fixed_word = FIXED_FIRST_WORD
+    fixed_words_left = FIXED_FIRST_WORD_COUNT
 
     for placeholder_component in string.Formatter().parse(text):
         field_name: str | None = placeholder_component[1]
         if field_name is None:
             continue
 
-        random_words.append(words[0] if fixed_word else choice(words))
-        fixed_word = False
+        random_words.append(words[0] if fixed_words_left > 0 else choice(words))
+        fixed_words_left -= 1
 
+    shuffle(random_words)
     return random_words
 
 
